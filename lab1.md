@@ -188,7 +188,7 @@
 
 > Determine where the kernel initializes its stack, and exactly where in memory its stack is located. How does the kernel reserve space for its stack? And at which "end" of this reserved area is the stack pointer initialized to point to?
 
-* 初始化栈位于entry.S文件中74~77行以及86~95行
+* 初始化栈位于entry.S文件中74\~77行以及86\~95行
 
   * ```assembly
     relocated:
