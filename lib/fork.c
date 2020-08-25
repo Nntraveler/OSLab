@@ -117,28 +117,23 @@ fork(void)
 		panic("sys_exofork: %e", envid);
 	if (envid == 0) 
 	{
-		// We're the child.
-		// The copied value of the global variable 'thisenv'
-		// is no longer valid (it refers to the parent!).
-		// Fix it and return 0.
 		thisenv = &envs[ENVX(sys_getenvid())];
 		return 0;
 	}
 
-	// We're the parent.
 
 	for (addr = 0; addr < USTACKTOP; addr += PGSIZE)
 		if((uvpd[PDX(addr)] & PTE_P) && (uvpt[PGNUM(addr)] & PTE_P) && (uvpt[PGNUM(addr)] & PTE_U))
 			duppage(envid, PGNUM(addr));
 
-	// allocate a new page for the child's user exception stack.
+	// allocate a new page
 	if((r = sys_page_alloc(envid, (void *)(UXSTACKTOP - PGSIZE), PTE_U | PTE_W | PTE_P)) < 0)
 		panic("sys_page_alloc: %e", r);
 
 	extern void _pgfault_upcall();
 	sys_env_set_pgfault_upcall(envid, _pgfault_upcall);
 
-	// Start the child environment running
+	// Start child environment
 	if ((r = sys_env_set_status(envid, ENV_RUNNABLE)) < 0)
 		panic("sys_env_set_status: %e", r);
 

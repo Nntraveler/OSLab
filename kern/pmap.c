@@ -618,7 +618,7 @@ mmio_map_region(physaddr_t pa, size_t size)
     size_t begin = ROUNDDOWN(pa, PGSIZE), end = ROUNDUP(pa + size, PGSIZE);
     size_t map_size = end - begin;
     if (base + map_size >= MMIOLIM) {
-        panic("overflow MMIOLIM");
+        panic("mmio_map_region: overflow MMIOLIM");
     }    
     boot_map_region(kern_pgdir, base, map_size, pa, PTE_PCD|PTE_PWT|PTE_W);
     uintptr_t result = base;

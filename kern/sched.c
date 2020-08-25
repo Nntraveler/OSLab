@@ -37,7 +37,6 @@ sched_yield(void)
 	for(i = index; i != index + NENV ; i++) {
 		if (envs[i%NENV].env_status == ENV_RUNNABLE)
 		{
-//			cprintf("CPU %d run envs[%d]\n", cpunum(), i%NENV);
 			env_run(&envs[i%NENV]);
 		}
 	}
